@@ -54,10 +54,11 @@ export class CalendarComponent implements OnInit {
       if (id > 0) {
         let num = 1;
         for (let i = id; i <= 6; i++) {
-          this.htmlCalendar = this.htmlCalendar + '<div>' + num + '<app-row-calendar></app-row-calendar></div>';
+          this.htmlCalendar = this.htmlCalendar + '<div class="col-sm-1">' + num + '<app-row-calendar></app-row-calendar></div>';
           num++;
         }
       }
+      this.htmlCalendar = this.htmlCalendar + '</div>';
       return;
     }
     const valueToAddCalendar = this.calendarMatrix.find(x => {
@@ -65,11 +66,13 @@ export class CalendarComponent implements OnInit {
     });
     if (valueToAddCalendar.days.indexOf(day) === -1) {
       valueToAddCalendar.days.push(day);
-      this.htmlCalendar = this.htmlCalendar + '<div>' + day + '<app-row-calendar></app-row-calendar></div>';
+      this.htmlCalendar = this.htmlCalendar + '<div class="col-sm-1">' + day + '<app-row-calendar></app-row-calendar></div>';
     }
     day++;
     id++;
     if (id > 6) {
+      this.htmlCalendar = this.htmlCalendar + '</div>';
+      this.htmlCalendar = this.htmlCalendar + '<div class="row">';
       id = 0;
     }
     this.addDaysFoward(day, id, maxDay);
@@ -80,10 +83,11 @@ export class CalendarComponent implements OnInit {
       if (id < 6) {
         let num = 31;
         for (let i = id; i >= 0; i--) {
-          this.htmlCalendar = '<div>' + num + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
+          this.htmlCalendar = '<div class="col-sm-1">' + num + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
           num--;
         }
       }
+      this.htmlCalendar = '<div class="row">' + this.htmlCalendar;
       return;
     }
     const valueToAddCalendar = this.calendarMatrix.find(x => {
@@ -91,11 +95,13 @@ export class CalendarComponent implements OnInit {
     });
     if (valueToAddCalendar.days.indexOf(day) === -1) {
       valueToAddCalendar.days.push(day);
-      this.htmlCalendar = '<div>' + day + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
+      this.htmlCalendar = '<div class="col-sm-1">' + day + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
     }
     day--;
     id--;
     if (id < 0) {
+      this.htmlCalendar = '<div class="row">' + this.htmlCalendar;
+      this.htmlCalendar = '</div>' + this.htmlCalendar;
       id = 6;
     }
     this.addDaysBack(day, id, maxDay);
