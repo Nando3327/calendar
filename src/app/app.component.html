@@ -1,2 +1,17 @@
 <!--The content below is only a placeholder and can be replaced.-->
 <app-calendar></app-calendar>
+<div class="container">
+  <div class="row">
+    <div class="col-sm-6">
+      <form>
+        <div class="form-group">
+          <label>{{labels.inputs.months}}</label>
+          <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
+            <option *ngFor="let month of months" [ngValue]="month.id" >{{month.value}}</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" (click)="drawCalendar()">{{labels.inputs.drawCalendar}}</button>
+      </form>
+    </div>
+  </div>
+</div>

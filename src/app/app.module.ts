@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {CalendarModule} from './Calendar/calendar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {LabelsService} from './labels/labels.service';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -12,9 +14,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
   imports: [
     BrowserModule,
     CalendarModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
-  providers: [],
+  providers: [LabelsService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

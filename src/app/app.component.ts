@@ -1,9 +1,5 @@
-import { Component } from '@angular/core';
-
-interface Food {
-  value: string;
-  viewValue: string;
-}
+import {Component} from '@angular/core';
+import {LabelsService} from './labels/labels.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +8,28 @@ interface Food {
 })
 export class AppComponent {
   title = 'calendar';
+  labels: any;
+  months: any;
+  selectedMonth: string;
+  loadFilters = false;
 
-  foods: Food[] = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
-  ];
+  constructor(Labels: LabelsService) {
+    this.labels = Labels.getLabels();
+    this.months = [{
+      id: 1,
+      value: 'January'
+    }, {
+      id: 2,
+      value: 'Febrary'
+    }];
+    this.selectedMonth = this.months[0].id;
+  }
+
+  drawCalendar(): void {
+    this.loadFilters = true;
+    if (this.selectedMonth === 'undefiend') {
+      return;
+    }
+    console.log(this.selectedMonth);
+  }
 }
