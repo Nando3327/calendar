@@ -9,7 +9,12 @@ export class CalendarComponent implements OnInit {
   @Input() options: any;
   calendarMatrix: any;
   htmlCalendar = '';
-  showCalendar = false;
+  currentMonth = new Date().getMonth();
+  selectedMonth: string;
+  monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
+  selectedMonthId: number;
 
   constructor() {
   }
@@ -46,6 +51,32 @@ export class CalendarComponent implements OnInit {
     }];
     this.addDaysFoward(this.options.currentDay, this.options.currentWeekDay, this.options.dayMonthNumbers);
     this.addDaysBack(this.options.currentDay, this.options.currentWeekDay, 1);
+    document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
+    this.selectedMonthId = this.options.currentMonth;
+    this.getMonthName(this.options.currentMonth);
+  }
+
+  getMonthName(month): void {
+    this.selectedMonth = this.monthNames[month];
+  }
+
+  prevMonth(): void {
+    this.selectedMonthId--;
+    this.drawCalendar();
+  }
+
+  nextMonth(): void {
+    this.selectedMonthId++;
+    this.drawCalendar();
+  }
+
+  drawCalendar(): void {
+    this.getMonthName(this.selectedMonthId);
+    this.resetCalendar();
+    const date = new Date(2020, this.selectedMonthId, 1);
+    const dateNext = new Date(2020, this.selectedMonthId + 1, 0);
+    this.addDaysFoward(date.getDate(), date.getDay(), dateNext.getDate());
+    this.addDaysBack(date.getDate(), date.getDay(), 1);
     document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
   }
 
@@ -105,5 +136,12 @@ export class CalendarComponent implements OnInit {
       id = 6;
     }
     this.addDaysBack(day, id, maxDay);
+  }
+
+  resetCalendar(): void {
+    this.htmlCalendar = '';
+    this.calendarMatrix.forEach( x => {
+      x.days = [];
+    });
   }
 }

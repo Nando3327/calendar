@@ -1,21 +1,6 @@
 <!--The content below is only a placeholder and can be replaced.-->
-<div class="container">
-  <div class="row">
-    <form>
-      <div class="col-sm-6">
-        <div class="form-group">
-          <label>{{labels.inputs.months}}</label>
-          <select class="form-control" [(ngModel)]="selectedMonth" name="selectedMonth">
-            <option *ngFor="let month of months" [ngValue]="month.id">{{month.value}}</option>
-          </select>
-        </div>
-      </div>
-      <div class="col-sm-12 text-center">
-        <button type="submit" class="btn btn-primary" (click)="drawCalendar()">{{labels.inputs.drawCalendar}}</button>
-      </div>
-    </form>
-    <div class="col-sm-12" *ngIf="showCalendar">
-      <app-calendar [options]="calendarOptions"></app-calendar>
-    </div>
+<div class="row" style="margin: 1%;">
+  <div class="col-sm-12 text-center">
+    <app-calendar [options]="calendarOptions"></app-calendar>
   </div>
 </div>

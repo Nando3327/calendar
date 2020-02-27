@@ -7,32 +7,15 @@ import {LabelsService} from './labels/labels.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'calendar';
-  labels: any;
-  months: any;
-  selectedMonth: string;
-  showCalendar = false;
   calendarOptions: any;
 
-  constructor(Labels: LabelsService) {
-    this.labels = Labels.getLabels();
-    this.months = [{
-      id: 1,
-      value: 'January'
-    }, {
-      id: 2,
-      value: 'Febrary'
-    }];
-    this.selectedMonth = this.months[0].id;
-  }
-
-  drawCalendar(): void {
+  constructor() {
     const date = new Date();
     this.calendarOptions = {
       currentWeekDay: date.getDay(),
       currentDay: date.getDate(),
-      dayMonthNumbers: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+      dayMonthNumbers: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate(),
+      currentMonth: date.getMonth()
     };
-    this.showCalendar = true;
   }
 }
