@@ -11,7 +11,8 @@ export class AppComponent {
   labels: any;
   months: any;
   selectedMonth: string;
-  loadFilters = false;
+  showCalendar = false;
+  calendarOptions: any;
 
   constructor(Labels: LabelsService) {
     this.labels = Labels.getLabels();
@@ -26,10 +27,12 @@ export class AppComponent {
   }
 
   drawCalendar(): void {
-    this.loadFilters = true;
-    if (this.selectedMonth === 'undefiend') {
-      return;
-    }
-    console.log(this.selectedMonth);
+    const date = new Date();
+    this.calendarOptions = {
+      currentWeekDay: date.getDay(),
+      currentDay: date.getDate(),
+      dayMonthNumbers: new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    };
+    this.showCalendar = true;
   }
 }
