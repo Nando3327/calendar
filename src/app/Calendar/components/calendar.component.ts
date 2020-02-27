@@ -14,6 +14,8 @@ export class CalendarComponent implements OnInit {
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+  dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
+    'Saturday'];
   selectedMonthId: number;
 
   constructor() {
@@ -49,8 +51,10 @@ export class CalendarComponent implements OnInit {
       name: 'saturday',
       days: []
     }];
+    this.resetCalendar();
     this.addDaysFoward(this.options.currentDay, this.options.currentWeekDay, this.options.dayMonthNumbers);
     this.addDaysBack(this.options.currentDay, this.options.currentWeekDay, 1);
+    this.drawDays();
     document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
     this.selectedMonthId = this.options.currentMonth;
     this.getMonthName(this.options.currentMonth);
@@ -77,7 +81,21 @@ export class CalendarComponent implements OnInit {
     const dateNext = new Date(2020, this.selectedMonthId + 1, 0);
     this.addDaysFoward(date.getDate(), date.getDay(), dateNext.getDate());
     this.addDaysBack(date.getDate(), date.getDay(), 1);
+    this.drawDays();
     document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
+  }
+
+  drawDays(): void {
+    let returnData = '<div class="row">';
+    this.dayNames.forEach(d => {
+      returnData = returnData + '<div class="col-sm-1"><label>' + d + '</label></div>';
+    });
+    returnData = returnData + '</div>';
+    this.htmlCalendar = returnData + this.htmlCalendar;
+  }
+
+  drawBorders(): string {
+    return '<div class="col-sm-1 border">';
   }
 
   addDaysFoward(day, id, maxDay): void {
@@ -85,7 +103,11 @@ export class CalendarComponent implements OnInit {
       if (id > 0) {
         let num = 1;
         for (let i = id; i <= 6; i++) {
-          this.htmlCalendar = this.htmlCalendar + '<div class="col-sm-1">' + num + '<app-row-calendar></app-row-calendar></div>';
+          const options = {
+            day: num,
+            disabled: true
+          };
+          this.htmlCalendar = this.htmlCalendar + this.drawBorders() + this.drawDay(options) + '</div>';
           num++;
         }
       }
@@ -97,7 +119,11 @@ export class CalendarComponent implements OnInit {
     });
     if (valueToAddCalendar.days.indexOf(day) === -1) {
       valueToAddCalendar.days.push(day);
-      this.htmlCalendar = this.htmlCalendar + '<div class="col-sm-1">' + day + '<app-row-calendar></app-row-calendar></div>';
+      const options = {
+        day: day,
+        disabled: false
+      };
+      this.htmlCalendar = this.htmlCalendar + this.drawBorders() + this.drawDay(options) + '</div>';
     }
     day++;
     id++;
@@ -114,7 +140,11 @@ export class CalendarComponent implements OnInit {
       if (id < 6) {
         let num = 31;
         for (let i = id; i >= 0; i--) {
-          this.htmlCalendar = '<div class="col-sm-1">' + num + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
+          const options = {
+            day: num,
+            disabled: true
+          };
+          this.htmlCalendar = this.drawBorders() + this.drawDay(options) + '</div>' + this.htmlCalendar;
           num--;
         }
       }
@@ -126,7 +156,11 @@ export class CalendarComponent implements OnInit {
     });
     if (valueToAddCalendar.days.indexOf(day) === -1) {
       valueToAddCalendar.days.push(day);
-      this.htmlCalendar = '<div class="col-sm-1">' + day + '<app-row-calendar></app-row-calendar></div>' + this.htmlCalendar;
+      const options = {
+        day: day,
+        disabled: false
+      };
+      this.htmlCalendar = this.drawBorders() + this.drawDay(options) + '</div>' + this.htmlCalendar;
     }
     day--;
     id--;
@@ -138,9 +172,16 @@ export class CalendarComponent implements OnInit {
     this.addDaysBack(day, id, maxDay);
   }
 
+  drawDay(options: any): string {
+    const disabled = (options.disabled || (this.currentMonth === this.options.currentMonth && options.day < this.options.currentDay)) ? 'disabled="disabled"' : '';
+    return '<button class="btn btn-lg"' + disabled + '">' +
+      '  <span>' + options.day + '</span>' +
+      '</button>';
+  }
+
   resetCalendar(): void {
     this.htmlCalendar = '';
-    this.calendarMatrix.forEach( x => {
+    this.calendarMatrix.forEach(x => {
       x.days = [];
     });
   }
