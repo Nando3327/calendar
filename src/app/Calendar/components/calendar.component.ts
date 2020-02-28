@@ -1,4 +1,4 @@
-import {AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
 import {DomSanitizer} from '@angular/platform-browser';
 import {CalendarService} from '../calendar.service';
 
@@ -13,7 +13,7 @@ const mock = [{
   city: 'Quito',
   desc: 'ejemplo de prueba'
 }, {
-  id: 2,
+  id: 8,
   year: 2020,
   month: 1,
   day: 28,
@@ -33,7 +33,7 @@ const mock = [{
   city: 'Quito',
   desc: 'ejemplo de prueba'
 }, {
-  id: 4,
+  id: 6,
   year: 2020,
   month: 1,
   day: 2,
@@ -68,8 +68,8 @@ export class CalendarComponent implements OnInit {
 
   constructor(private sanitizer: DomSanitizer,
               private ngZone: NgZone,
-              public service: CalendarService,
-              private ref: ChangeDetectorRef) {
+              private ref: ChangeDetectorRef,
+              private calendarService: CalendarService) {
   }
 
   ngOnInit(): void {
@@ -259,11 +259,13 @@ export class CalendarComponent implements OnInit {
           '<span style="font-size: 10px;"> ' + d.initialHour + ' </span>' +
           '<span style="font-size: 10px;"> ' + d.finalHour + ' </span><br>';
       });
-      return '<button class="btn btn-lg"' + disabled + ' onclick="namecaller(' + options.day + ')">' +
-        '<span>' + options.day + '</span><br>' + retData + '</button>';
+      return '<button class="btn btn-lg" style="width: 100% !important; height: 100% !important;"'
+        + disabled + ' onclick="namecaller(' + options.day + ')">' +
+        '<span style="font-size: 10px;">' + options.day + '</span><br>' + retData + '</button>';
     } else {
-      return '<button class="btn btn-lg"' + disabled + ' onclick="namecaller(' + options.day + ')">' +
-        '<span>' + options.day + '</span>' +
+      return '<button class="btn btn-lg" style="width: 100% !important; height: 100% !important;"'
+        + disabled + ' onclick="namecaller(' + options.day + ')">' +
+        '<span style="font-size: 10px;">' + options.day + '</span>' +
         '</button>';
     }
   }
@@ -285,20 +287,37 @@ export class CalendarComponent implements OnInit {
     };
     this.showCalendar = false;
     this.ref.detectChanges();
+    setTimeout(() => {
+      this.calendarService.loadData({}, 'add');
+    }, 400);
   }
 
   actionEvent(mode, item): void {
     switch (mode) {
       case 'edit':
-
+          this.calendarService.loadData(item, mode);
         break;
       case 'delete':
-        const indexToRemove = mock.findIndex(x => {
-          return x.id === item.id;
+        this.deleteReminder(item.id);
+        this.renderCalendar();
+        break;
+      case 'deleteAll':
+        item.forEach( i => {
+          this.deleteReminder(i.id);
         });
-        mock.splice(indexToRemove, 1);
+        this.renderCalendar();
         break;
     }
+  }
+
+  deleteReminder(id): void{
+    const indexToRemove = mock.findIndex(x => {
+      return x.id === id;
+    });
+    mock.splice(indexToRemove, 1);
+  }
+
+  renderCalendar(): void {
     this.drawCalendar();
     this.showCalendar = true;
     setTimeout(() => {
@@ -313,8 +332,25 @@ export class CalendarComponent implements OnInit {
     this['self'].showEvents(item);
   }
 
-  return(): void {
-    this.showCalendar = true;
+  returnToCalendar(event): void {
+    if (event && event.action && event.action === 'save') {
+      switch (event.mode) {
+        case 'add':
+          const sorted = mock.sort(function (a, b) {
+            return a.id - b.id;
+          });
+          event.data.id = sorted[mock.length - 1].id + 1;
+          break;
+        case 'edit':
+          const indexToRemove = mock.findIndex(x => {
+            return x.id === event.data.id;
+          });
+          mock.splice(indexToRemove, 1);
+          break;
+      }
+      mock.push(event.data);
+    }
+    this.renderCalendar();
     this.ref.detectChanges();
   }
 }

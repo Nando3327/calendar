@@ -11,7 +11,7 @@ export class CalendarService implements OnInit {
   ngOnInit(): void {
   }
 
-  loadData(item): void {
-    this.clickEvent$.next(item);
+  loadData(item, mode): void {
+    this.clickEvent$.next({item: item, mode: mode});
   }
 }

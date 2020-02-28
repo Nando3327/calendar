@@ -15,4 +15,9 @@ export class RowCalendarComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  deleteAll(): void {
+    if (this.options.action) {
+      this.options.action('deleteAll', this.events);
+    }
+  }
 }

@@ -19,15 +19,5 @@
 
 <div class="container" *ngIf="!showCalendar">
   <app-row-calendar [events]="dataShow" [options]="rowCalendarOptions"></app-row-calendar>
-  <div class="row" style="padding: 1%">
-
-    <div class="col-sm-12 text-center">
-      <button class="btn btn-secondary" style="margin: 5px" (click)="return()">
-        Return
-      </button>
-      <button class="btn btn-primary" style="margin: 5px" (click)="return()">
-        Add
-      </button>
-    </div>
-  </div>
+  <app-form-calendar (returnActionEmiter)="returnToCalendar($event)"></app-form-calendar>
 </div>
