@@ -8,8 +8,8 @@ const mock = [{
   month: 1,
   day: 28,
   color: 'red',
-  initialHour: '12:00',
-  finalHour: '14:00',
+  initialHour: '06:00',
+  finalHour: '20:00',
   city: 'Quito',
   desc: 'ejemplo de prueba'
 }, {
@@ -18,7 +18,7 @@ const mock = [{
   month: 1,
   day: 28,
   color: 'blue',
-  initialHour: '12:00',
+  initialHour: '01:00',
   finalHour: '14:00',
   city: 'Quito',
   desc: 'ejemplo de prueba'
@@ -242,8 +242,11 @@ export class CalendarComponent implements OnInit {
   }
 
   getItems(day): Array<any> {
-    return mock.filter(x => {
+    const ret = mock.filter(x => {
       return x.day === day && x.month === this.selectedMonthId;
+    });
+    return ret.sort(function (a, b) {
+      return a.initialHour.localeCompare(b.initialHour);
     });
   }
 
@@ -295,14 +298,14 @@ export class CalendarComponent implements OnInit {
   actionEvent(mode, item): void {
     switch (mode) {
       case 'edit':
-          this.calendarService.loadData(item, mode);
+        this.calendarService.loadData(item, mode);
         break;
       case 'delete':
         this.deleteReminder(item.id);
         this.renderCalendar();
         break;
       case 'deleteAll':
-        item.forEach( i => {
+        item.forEach(i => {
           this.deleteReminder(i.id);
         });
         this.renderCalendar();
@@ -310,7 +313,7 @@ export class CalendarComponent implements OnInit {
     }
   }
 
-  deleteReminder(id): void{
+  deleteReminder(id): void {
     const indexToRemove = mock.findIndex(x => {
       return x.id === id;
     });
