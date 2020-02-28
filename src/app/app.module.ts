@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import {CalendarModule} from './Calendar/calendar.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {LabelsService} from './labels/labels.service';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {AngularFontAwesomeModule} from 'angular-font-awesome';
 
@@ -20,7 +19,7 @@ import {AngularFontAwesomeModule} from 'angular-font-awesome';
     ReactiveFormsModule,
     AngularFontAwesomeModule
   ],
-  providers: [LabelsService],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

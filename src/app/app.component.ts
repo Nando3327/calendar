@@ -1,5 +1,4 @@
 import {Component} from '@angular/core';
-import {LabelsService} from './labels/labels.service';
 
 @Component({
   selector: 'app-root',
