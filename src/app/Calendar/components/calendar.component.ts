@@ -1,4 +1,48 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, Input, NgZone, OnInit} from '@angular/core';
+import {DomSanitizer} from '@angular/platform-browser';
+import {CalendarService} from '../calendar.service';
+
+const mock = [{
+  id: 1,
+  year: 2020,
+  month: 1,
+  day: 28,
+  color: 'red',
+  initialHour: '12:00',
+  finalHour: '14:00',
+  city: 'Quito',
+  desc: 'ejemplo de prueba'
+}, {
+  id: 2,
+  year: 2020,
+  month: 1,
+  day: 28,
+  color: 'blue',
+  initialHour: '12:00',
+  finalHour: '14:00',
+  city: 'Quito',
+  desc: 'ejemplo de prueba'
+}, {
+  id: 3,
+  year: 2020,
+  month: 2,
+  day: 14,
+  color: 'blue',
+  initialHour: '12:00',
+  finalHour: '14:00',
+  city: 'Quito',
+  desc: 'ejemplo de prueba'
+}, {
+  id: 4,
+  year: 2020,
+  month: 1,
+  day: 2,
+  color: 'red',
+  initialHour: '12:00',
+  finalHour: '14:00',
+  city: 'Quito',
+  desc: 'ejemplo de prueba'
+}];
 
 @Component({
   selector: 'app-calendar',
@@ -9,7 +53,6 @@ export class CalendarComponent implements OnInit {
   @Input() options: any;
   calendarMatrix: any;
   htmlCalendar = '';
-  currentMonth = new Date().getMonth();
   selectedMonth: string;
   monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
@@ -17,8 +60,16 @@ export class CalendarComponent implements OnInit {
   dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday',
     'Saturday'];
   selectedMonthId: number;
+  showCalendar = true;
+  showCalendarData = false;
+  safeHtml: any;
+  dataShow: any;
+  rowCalendarOptions: any;
 
-  constructor() {
+  constructor(private sanitizer: DomSanitizer,
+              private ngZone: NgZone,
+              public service: CalendarService,
+              private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
@@ -52,12 +103,20 @@ export class CalendarComponent implements OnInit {
       days: []
     }];
     this.resetCalendar();
+    this.selectedMonthId = this.options.currentMonth;
     this.addDaysFoward(this.options.currentDay, this.options.currentWeekDay, this.options.dayMonthNumbers);
     this.addDaysBack(this.options.currentDay, this.options.currentWeekDay, 1);
-    this.drawDays();
-    document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
-    this.selectedMonthId = this.options.currentMonth;
+    this.drawDaysNames();
     this.getMonthName(this.options.currentMonth);
+    this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(
+      this.htmlCalendar
+    );
+    this.showCalendarData = false;
+    setTimeout(() => {
+      const self = this;
+      window['angularComponent'] = {runThisFunctionFromOutside: this.runThisFunctionFromOutside, zone: this.ngZone, self: self};
+      this.showCalendarData = true;
+    }, 200);
   }
 
   getMonthName(month): void {
@@ -81,21 +140,27 @@ export class CalendarComponent implements OnInit {
     const dateNext = new Date(2020, this.selectedMonthId + 1, 0);
     this.addDaysFoward(date.getDate(), date.getDay(), dateNext.getDate());
     this.addDaysBack(date.getDate(), date.getDay(), 1);
-    this.drawDays();
-    document.getElementById('dataReceipt').innerHTML = this.htmlCalendar;
+    this.drawDaysNames();
+    this.safeHtml = this.sanitizer.bypassSecurityTrustHtml(
+      this.htmlCalendar
+    );
+    this.showCalendarData = false;
+    setTimeout(() => {
+      this.showCalendarData = true;
+    }, 200);
   }
 
-  drawDays(): void {
+  drawDaysNames(): void {
     let returnData = '<div class="row">';
     this.dayNames.forEach(d => {
-      returnData = returnData + '<div class="col-sm-1"><label>' + d + '</label></div>';
+      returnData = returnData + '<div style="width: 14% !important;"><label>' + d + '</label></div>';
     });
     returnData = returnData + '</div>';
     this.htmlCalendar = returnData + this.htmlCalendar;
   }
 
   drawBorders(): string {
-    return '<div class="col-sm-1 border">';
+    return '<div class="border" style="width: 14% !important;">';
   }
 
   addDaysFoward(day, id, maxDay): void {
@@ -105,7 +170,8 @@ export class CalendarComponent implements OnInit {
         for (let i = id; i <= 6; i++) {
           const options = {
             day: num,
-            disabled: true
+            disabled: true,
+            showData: false
           };
           this.htmlCalendar = this.htmlCalendar + this.drawBorders() + this.drawDay(options) + '</div>';
           num++;
@@ -121,7 +187,8 @@ export class CalendarComponent implements OnInit {
       valueToAddCalendar.days.push(day);
       const options = {
         day: day,
-        disabled: false
+        disabled: false,
+        showData: true
       };
       this.htmlCalendar = this.htmlCalendar + this.drawBorders() + this.drawDay(options) + '</div>';
     }
@@ -142,7 +209,8 @@ export class CalendarComponent implements OnInit {
         for (let i = id; i >= 0; i--) {
           const options = {
             day: num,
-            disabled: true
+            disabled: true,
+            showData: false
           };
           this.htmlCalendar = this.drawBorders() + this.drawDay(options) + '</div>' + this.htmlCalendar;
           num--;
@@ -158,7 +226,8 @@ export class CalendarComponent implements OnInit {
       valueToAddCalendar.days.push(day);
       const options = {
         day: day,
-        disabled: false
+        disabled: false,
+        showData: true
       };
       this.htmlCalendar = this.drawBorders() + this.drawDay(options) + '</div>' + this.htmlCalendar;
     }
@@ -172,11 +241,31 @@ export class CalendarComponent implements OnInit {
     this.addDaysBack(day, id, maxDay);
   }
 
+  getItems(day): Array<any> {
+    return mock.filter(x => {
+      return x.day === day && x.month === this.selectedMonthId;
+    });
+  }
+
   drawDay(options: any): string {
-    const disabled = (options.disabled || (this.currentMonth === this.options.currentMonth && options.day < this.options.currentDay)) ? 'disabled="disabled"' : '';
-    return '<button class="btn btn-lg"' + disabled + '">' +
-      '  <span>' + options.day + '</span>' +
-      '</button>';
+    const disabled = (options.disabled ||
+      (this.selectedMonthId === this.options.currentMonth && options.day < this.options.currentDay)) ? 'disabled="disabled"' : '';
+    const data = this.getItems(options.day);
+    if (data !== undefined && options.showData) {
+      let retData = '';
+      data.forEach(d => {
+        retData = retData +
+          '<span class="badge" style="background-color:' + d.color + '; font-size: 10px;"><i class="fa fa-clock-o"></i></span>' +
+          '<span style="font-size: 10px;"> ' + d.initialHour + ' </span>' +
+          '<span style="font-size: 10px;"> ' + d.finalHour + ' </span><br>';
+      });
+      return '<button class="btn btn-lg"' + disabled + ' onclick="namecaller(' + options.day + ')">' +
+        '<span>' + options.day + '</span><br>' + retData + '</button>';
+    } else {
+      return '<button class="btn btn-lg"' + disabled + ' onclick="namecaller(' + options.day + ')">' +
+        '<span>' + options.day + '</span>' +
+        '</button>';
+    }
   }
 
   resetCalendar(): void {
@@ -184,5 +273,48 @@ export class CalendarComponent implements OnInit {
     this.calendarMatrix.forEach(x => {
       x.days = [];
     });
+  }
+
+  showEvents(item): void {
+    this.dataShow = this.getItems(item);
+    this.rowCalendarOptions = {
+      day: item,
+      month: this.selectedMonthId + 1,
+      year: 2020,
+      action: this.actionEvent.bind(this)
+    };
+    this.showCalendar = false;
+    this.ref.detectChanges();
+  }
+
+  actionEvent(mode, item): void {
+    switch (mode) {
+      case 'edit':
+
+        break;
+      case 'delete':
+        const indexToRemove = mock.findIndex(x => {
+          return x.id === item.id;
+        });
+        mock.splice(indexToRemove, 1);
+        break;
+    }
+    this.drawCalendar();
+    this.showCalendar = true;
+    setTimeout(() => {
+      const self = this;
+      window['angularComponent'] = {runThisFunctionFromOutside: this.runThisFunctionFromOutside, zone: this.ngZone, self: self};
+      this.showCalendarData = true;
+      this.ref.detectChanges();
+    }, 200);
+  }
+
+  runThisFunctionFromOutside(item) {
+    this['self'].showEvents(item);
+  }
+
+  return(): void {
+    this.showCalendar = true;
+    this.ref.detectChanges();
   }
 }

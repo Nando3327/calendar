@@ -6,6 +6,9 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class RowCalendarComponent implements OnInit {
 
+  @Input() events;
+  @Input() options;
+
   constructor() {
   }
 

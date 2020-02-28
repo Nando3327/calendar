@@ -1,16 +1,33 @@
-<div class="row">
-  <div class="col-md-1">
-    <button class="btn btn-primary" (click)="prevMonth()" [hidden]="options.currentMonth === selectedMonthId">
-      <i class="fa fa-arrow-left"></i>
-    </button>
+<div [hidden]="!showCalendar">
+  <div class="row">
+    <div style="width: 14% !important;">
+      <button class="btn btn-primary" (click)="prevMonth()" [hidden]="options.currentMonth === selectedMonthId">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+    </div>
+    <div class="text-center" style="width: 70% !important;">
+      {{selectedMonth}}
+    </div>
+    <div style="width: 14% !important;">
+      <button class="btn btn-primary" (click)="nextMonth()">
+        <i class="fa fa-arrow-right"></i>
+      </button>
+    </div>
   </div>
-  <div class="col-md-5 text-center">
-    {{selectedMonth}}
-  </div>
-  <div class="col-md-1">
-    <button class="btn btn-primary" (click)="nextMonth()">
-      <i class="fa fa-arrow-right"></i>
-    </button>
+  <div *ngIf="showCalendarData" [innerHTML]="safeHtml"></div>
+</div>
+
+<div class="container" *ngIf="!showCalendar">
+  <app-row-calendar [events]="dataShow" [options]="rowCalendarOptions"></app-row-calendar>
+  <div class="row" style="padding: 1%">
+
+    <div class="col-sm-12 text-center">
+      <button class="btn btn-secondary" style="margin: 5px" (click)="return()">
+        Return
+      </button>
+      <button class="btn btn-primary" style="margin: 5px" (click)="return()">
+        Add
+      </button>
+    </div>
   </div>
 </div>
-<div id="dataReceipt"></div>
