@@ -37,7 +37,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     this.subscriptions.push(this.calendarService.clickEvent$.subscribe(data => {
       this.mode = data.mode;
       this.dayCalendar = data.item.day;
-      this.monthCalendar = data.item.month
+      this.monthCalendar = data.item.month;
       if (data.mode === 'edit') {
         this.initTime = data.item.initialHour;
         this.endTime = data.item.finalHour;
@@ -86,6 +86,14 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     if (!this.validadFields()) {
       return;
     }
+    this.calendarService.getWeather({}).subscribe(res => {
+      this.saveCalendarEvent();
+    }, error => {
+      this.saveCalendarEvent();
+    });
+  }
+
+  saveCalendarEvent(): void {
     const item: DateModel = {
       year: 2020,
       month: this.monthCalendar,
