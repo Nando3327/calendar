@@ -18,6 +18,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
   endTime: string;
   desc: string;
   city: string;
+  cityName: string;
   color: string;
   id: number;
   dayCalendar: number;
@@ -28,12 +29,14 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
   cityRequired = false;
   colorRequired = false;
   invalidRate = false;
+  cities: Array<any>;
 
   constructor(private calendarService: CalendarService,
               private ref: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
+    this.cities = this.calendarService.getCities();
     this.subscriptions.push(this.calendarService.clickEvent$.subscribe(data => {
       this.mode = data.mode;
       this.dayCalendar = data.item.day;
@@ -42,7 +45,9 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
         this.initTime = data.item.initialHour;
         this.endTime = data.item.finalHour;
         this.desc = data.item.desc;
-        this.city = data.item.city;
+        this.city = this.cities.find(c => {
+          return c.id.toString() === data.item.city;
+        }).id;
         this.color = data.item.color;
         this.id = data.item.id;
         this.showValidations();
@@ -77,7 +82,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     this.initTimeRequired = this.isNullEmpty(this.initTime);
     this.endTimeRequired = this.isNullEmpty(this.endTime);
     this.descriptionRequired = this.isNullEmpty(this.desc);
-    this.cityRequired = false;
+    this.cityRequired = this.isNullEmpty(this.city);
     this.colorRequired = this.isNullEmpty(this.color);
     this.invalidRate = (this.initTime > this.endTime);
   }
@@ -100,7 +105,10 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
       day: this.dayCalendar,
       desc: this.desc,
       color: this.color,
-      city: 'Quito',
+      city: this.city,
+      cityName: this.cities.find(c => {
+        return this.city === c.id.toString();
+      }).name,
       initialHour: this.initTime,
       finalHour: this.endTime,
       weather: 'fa fa-sun-o'

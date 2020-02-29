@@ -38,7 +38,9 @@
     <label class="control-label">City:</label>
   </div>
   <div class="col-sm-4">
-    <input type="text" class="form-control" maxlength="30" [(ngModel)]="city">
+    <select class="form-control" [(ngModel)]="city">
+      <option *ngFor="let city of cities" [value]="city.id">{{city.name}}</option>
+    </select>
     <div *ngIf="cityRequired"
          class="alert alert-danger">Field required.
     </div>
