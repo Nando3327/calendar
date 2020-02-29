@@ -18,7 +18,7 @@ export class CalendarService implements OnInit {
   }
 
   getWeather(params): Observable<any> {
-    return this.http.get('http://api.openweathermap.org/data/2.5/forecast/daily?id=524901&cnt=5&appid=f89b76ab38eecff2f27d04ea0ca46f19');
+    return this.http.get('http://api.openweathermap.org/data/2.5/weather?q=' + params.name + '&APPID=f89b76ab38eecff2f27d04ea0ca46f19');
   }
 
   getCities(): Array<any> {

@@ -13,7 +13,7 @@ const mock = [{
   city: '3652462',
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
-  weather: 'fa fa-cloud'
+  weather: '10d'
 }, {
   id: 8,
   year: 2020,
@@ -25,7 +25,7 @@ const mock = [{
   city: '3652462',
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
-  weather: 'fa fa-cloud'
+  weather: '10d'
 }, {
   id: 3,
   year: 2020,
@@ -37,19 +37,19 @@ const mock = [{
   city: '3652462',
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
-  weather: 'fa fa-cloud'
+  weather: '09d'
 }, {
   id: 6,
   year: 2020,
-  month: 1,
-  day: 2,
+  month: 3,
+  day: 30,
   color: '#ff0000',
   initialHour: '12:00',
   finalHour: '14:00',
   city: '3652462',
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
-  weather: 'fa fa-cloud'
+  weather: '03d'
 }];
 
 @Component({

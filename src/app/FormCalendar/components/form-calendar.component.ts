@@ -91,27 +91,28 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     if (!this.validadFields()) {
       return;
     }
-    this.calendarService.getWeather({}).subscribe(res => {
-      this.saveCalendarEvent();
+    const city = this.cities.find(c => {
+      return this.city === c.id.toString();
+    });
+    this.calendarService.getWeather(city).subscribe(res => {
+      this.saveCalendarEvent(city, res.weather[0]);
     }, error => {
-      this.saveCalendarEvent();
+      this.saveCalendarEvent(city, {});
     });
   }
 
-  saveCalendarEvent(): void {
+  saveCalendarEvent(city, weather): void {
     const item: DateModel = {
       year: 2020,
       month: this.monthCalendar,
       day: this.dayCalendar,
       desc: this.desc,
       color: this.color,
-      city: this.city,
-      cityName: this.cities.find(c => {
-        return this.city === c.id.toString();
-      }).name,
+      city: city.id,
+      cityName: city.name,
       initialHour: this.initTime,
       finalHour: this.endTime,
-      weather: 'fa fa-sun-o'
+      weather: this.isNullEmpty(weather.icon) ? weather.icon : '01d'
     };
     if (this.mode === 'edit') {
       item.id = this.id;
