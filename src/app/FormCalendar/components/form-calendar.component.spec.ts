@@ -62,6 +62,7 @@ describe('FormCalendarComponent', () => {
     component.city = 3652462;
     component.initTime = '03:00';
     component.endTime = '04:00';
+    component.mode = 'add';
     const city = component.cities.find(c => {
       return component.city === c.id || component.city === c.id.toString();
     });
@@ -76,7 +77,7 @@ describe('FormCalendarComponent', () => {
       initialHour: component.initTime,
       finalHour: component.endTime,
       weather: '01d'
-    }, 'add');
+    }, component.mode);
     expect(response).toEqual(true);
   }));
 });
