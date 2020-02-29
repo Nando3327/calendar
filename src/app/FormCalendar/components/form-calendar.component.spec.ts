@@ -1,4 +1,4 @@
-import {async, ComponentFixture, fakeAsync, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {FormCalendarComponent} from './form-calendar.component';
 import {FormsModule} from '@angular/forms';
@@ -25,6 +25,7 @@ describe('FormCalendarComponent', () => {
   });
 
   it('should response an DateModel with the pass data from component', fakeAsync(() => {
+    tick(500);
     fixture.detectChanges();
     spyOn(component, 'saveAction').and.callThrough();
     component.monthCalendar = 2;
@@ -53,6 +54,7 @@ describe('FormCalendarComponent', () => {
   }));
 
   it('should return true if emit a new reminder to calendar-component', fakeAsync(() => {
+    tick(500);
     fixture.detectChanges();
     spyOn(component, 'saveCalendarEvent').and.callThrough();
     component.monthCalendar = 2;

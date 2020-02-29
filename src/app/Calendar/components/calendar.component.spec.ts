@@ -1,4 +1,4 @@
-import {async, ComponentFixture, TestBed} from '@angular/core/testing';
+import {async, ComponentFixture, fakeAsync, TestBed, tick} from '@angular/core/testing';
 
 import {CalendarComponent} from './calendar.component';
 import {FormsModule} from '@angular/forms';
@@ -32,26 +32,28 @@ describe('CalendarComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create a new reminder', () => {
-    fixture.detectChanges();
+  it('should create a new reminder', fakeAsync(() => {
     spyOn(component, 'returnToCalendar').and.callThrough();
-    const mockInitialSize = component.mock.length;
-    component.returnToCalendar({
-      action: 'save',
-      mode: 'add',
-      data: {
-        year: 2020,
-        month: 3,
-        day: 15,
-        desc: 'Unit Test to add',
-        color: '#27ff1d',
-        city: 3652462,
-        cityName: 'Quito',
-        initialHour: '05:07',
-        finalHour: '05:08',
-        weather: '01d'
-      }
+    fixture.whenStable().then(() => { // wait for async getQuote
+      fixture.detectChanges();        // update view with quote
+      const mockInitialSize = component.mock.length;
+      component.returnToCalendar({
+        action: 'save',
+        mode: 'add',
+        data: {
+          year: 2020,
+          month: 3,
+          day: 15,
+          desc: 'Unit Test to add',
+          color: '#27ff1d',
+          city: 3652462,
+          cityName: 'Quito',
+          initialHour: '05:07',
+          finalHour: '05:08',
+          weather: '01d'
+        }
+      });
+      expect(mockInitialSize + 1).toEqual(component.mock.length);
     });
-    expect(mockInitialSize + 1).toEqual(component.mock.length);
-  });
+  }));
 });
