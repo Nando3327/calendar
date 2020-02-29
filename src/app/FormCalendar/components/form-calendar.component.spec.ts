@@ -29,7 +29,7 @@ describe('FormCalendarComponent', () => {
     spyOn(component, 'saveAction').and.callThrough();
     component.monthCalendar = 2;
     component.dayCalendar = 3;
-    component.desc = 'Prueba';
+    component.desc = 'Test';
     component.color = '#27ff1d';
     component.city = 3652462;
     component.initTime = '03:00';
@@ -52,12 +52,12 @@ describe('FormCalendarComponent', () => {
     });
   }));
 
-  it('should return true if create a new reminder', fakeAsync(() => {
+  it('should return true if emit a new reminder to calendar-component', fakeAsync(() => {
     fixture.detectChanges();
     spyOn(component, 'saveCalendarEvent').and.callThrough();
     component.monthCalendar = 2;
     component.dayCalendar = 3;
-    component.desc = 'Prueba';
+    component.desc = 'Test';
     component.color = '#27ff1d';
     component.city = 3652462;
     component.initTime = '03:00';
