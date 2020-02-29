@@ -1,11 +1,11 @@
 <div class="row">
-  <div class="col-sm-1">
+  <div class="col-sm-2">
     <br>
     <span>
 			<span><img src="http://openweathermap.org/img/wn/{{item.weather}}@2x.png"></span>
 		</span>
   </div>
-  <div class="col-sm-8" style="margin: 5px">
+  <div class="col-sm-8">
     <div class="card" [ngStyle]="{'border-left-color': '' + item.color + '' }">
       <div class="card-body">
         {{item.desc}} <br>
