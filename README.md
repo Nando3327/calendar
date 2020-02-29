@@ -28,7 +28,7 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # Components
 
-##Calendar component
+## Calendar component
 
 Draws a calendar and recives an object called options with the structure:
 
@@ -41,13 +41,13 @@ Draws a calendar and recives an object called options with the structure:
     }
 `` 
 
-###HTML
+### HTML
 
 ``html
 <app-calendar [options]="calendarOptions"></app-calendar>
 ``
 
-##Row Calendar
+## Row Calendar
 
 Draws Items Calendar by a parameter called events(Items to draw), the actions in the buttons and info to show are recived by a parameter called options, this one is a object like this:
 
@@ -62,23 +62,23 @@ Draws Items Calendar by a parameter called events(Items to draw), the actions in
 
 This component manage the delete all option
 
-###HTML
+### HTML
 
 ``html
 <app-row-calendar [events]="dataShow" [options]="rowCalendarOptions"></app-row-calendar>
 ``
 
-##Item Calendar
+## Item Calendar
 
 Draw a card with the item information. It receives two parameters. Options witch are the action on buttons and the Item with the data.
 
-###HTML
+### HTML
 
 ``html
 <app-item-calendar [item]="item" [options]="options"></app-item-calendar>
 ``
 
-##Form Calendar
+## Form Calendar
 
 Form who emits an object with the data to save. The object looks like:
 
@@ -90,7 +90,7 @@ Form who emits an object with the data to save. The object looks like:
    }
 ``
 
-###HTML
+### HTML
 
 ``html
 <app-form-calendar (returnActionEmiter)="returnToCalendar($event)"></app-form-calendar>
