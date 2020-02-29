@@ -268,7 +268,7 @@ export class CalendarComponent implements OnInit {
       let retData = '';
       data.forEach(d => {
         retData = retData +
-          '<span class="badge" style="background-color:' + d.color + '; font-size: 10px;"><i class="fa fa-clock-o"></i></span>' +
+          '<span class="badge" style="color:' + d.color + '; font-size: 10px;"><i class="fa fa-clock-o"></i></span>' +
           '<span style="font-size: 10px;"> ' + d.initialHour + ' </span>' +
           '<span style="font-size: 10px;"> ' + d.finalHour + ' </span><br>';
       });
