@@ -9,7 +9,7 @@
       {{selectedMonth}}
     </div>
     <div style="width: 14% !important;">
-      <button class="btn btn-primary" (click)="nextMonth()">
+      <button class="btn btn-primary" (click)="nextMonth()" [hidden]="11 === selectedMonthId">
         <i class="fa fa-arrow-right"></i>
       </button>
     </div>
