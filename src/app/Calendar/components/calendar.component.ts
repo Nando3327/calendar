@@ -163,7 +163,7 @@ export class CalendarComponent implements OnInit {
   drawDaysNames(): void {
     let returnData = '<div class="row">';
     this.dayNames.forEach(d => {
-      returnData = returnData + '<div style="width: 14% !important;"><label>' + d + '</label></div>';
+      returnData = returnData + '<div style="width: 14% !important;"><label style="font-size: 9px !important;">' + d + '</label></div>';
     });
     returnData = returnData + '</div>';
     this.htmlCalendar = returnData + this.htmlCalendar;
