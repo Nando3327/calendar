@@ -114,7 +114,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveCalendarEvent(saveObject, mode): void {
+  saveCalendarEvent(saveObject: DateModel, mode): void {
     if (this.mode === 'edit') {
       saveObject.id = this.id;
     }

@@ -73,6 +73,7 @@ export class CalendarComponent implements OnInit {
   safeHtml: any;
   dataShow: any;
   rowCalendarOptions: any;
+  mock: Array<any>;
 
   constructor(private sanitizer: DomSanitizer,
               private ngZone: NgZone,
@@ -81,6 +82,7 @@ export class CalendarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.mock = mock;
     this.calendarMatrix = [{
       id: 0,
       name: 'sunday',
@@ -250,7 +252,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getItems(day): Array<any> {
-    const ret = mock.filter(x => {
+    const ret = this.mock.filter(x => {
       return x.day === day && x.month === this.selectedMonthId;
     });
     return ret.sort(function (a, b) {
@@ -325,10 +327,10 @@ export class CalendarComponent implements OnInit {
   }
 
   deleteReminder(id): void {
-    const indexToRemove = mock.findIndex(x => {
+    const indexToRemove = this.mock.findIndex(x => {
       return x.id === id;
     });
-    mock.splice(indexToRemove, 1);
+    this.mock.splice(indexToRemove, 1);
   }
 
   renderCalendar(): void {
@@ -350,19 +352,19 @@ export class CalendarComponent implements OnInit {
     if (event && event.action && event.action === 'save') {
       switch (event.mode) {
         case 'add':
-          const sorted = mock.sort(function (a, b) {
+          const sorted = this.mock.sort(function (a, b) {
             return a.id - b.id;
           });
-          event.data.id = sorted[mock.length - 1].id + 1;
+          event.data.id = sorted[this.mock.length - 1].id + 1;
           break;
         case 'edit':
-          const indexToRemove = mock.findIndex(x => {
+          const indexToRemove = this.mock.findIndex(x => {
             return x.id === event.data.id;
           });
-          mock.splice(indexToRemove, 1);
+          this.mock.splice(indexToRemove, 1);
           break;
       }
-      mock.push(event.data);
+      this.mock.push(event.data);
     }
     this.renderCalendar();
     this.ref.detectChanges();
