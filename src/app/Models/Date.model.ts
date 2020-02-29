@@ -8,4 +8,5 @@ export class DateModel {
   finalHour: string;
   city: string;
   desc: string;
+  weather: string;
 }

@@ -1,4 +1,61 @@
-<div class="row" style="padding: 1%">
+<div class="row">
+  <div class="col-sm-2">
+    <label class="control-label">Begin:</label>
+  </div>
+  <div class="col-sm-4">
+    <input type="time" class="form-control" [(ngModel)]="initTime">
+    <div *ngIf="initTimeRequired"
+         class="alert alert-danger">Field required.
+    </div>
+    <div *ngIf="invalidRate"
+         class="alert alert-danger">Invalid time range.
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <label class="control-label">End:</label>
+  </div>
+  <div class="col-sm-4">
+    <input type="time" class="form-control" [(ngModel)]="endTime">
+    <div *ngIf="endTimeRequired"
+         class="alert alert-danger">Field required.
+    </div>
+    <div *ngIf="invalidRate"
+         class="alert alert-danger">Invalid time range.
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2">
+    <label class="control-label">Description:</label>
+  </div>
+  <div class="col-sm-4">
+    <input type="text" class="form-control" maxlength="30" [(ngModel)]="desc">
+    <div *ngIf="descriptionRequired"
+         class="alert alert-danger">Field required.
+    </div>
+  </div>
+  <div class="col-sm-2">
+    <label class="control-label">City:</label>
+  </div>
+  <div class="col-sm-4">
+    <input type="text" class="form-control" maxlength="30" [(ngModel)]="city">
+    <div *ngIf="cityRequired"
+         class="alert alert-danger">Field required.
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-2">
+    <label class="control-label">Label:</label>
+  </div>
+  <div class="col-sm-4">
+    <input type="color" class="form-control" [(ngModel)]="color">
+    <div *ngIf="colorRequired"
+         class="alert alert-danger">Field required.
+    </div>
+  </div>
+</div>
+<div class="row">
   <div class="col-sm-12 text-center">
     <button class="btn btn-secondary" style="margin: 5px" (click)="returnAction()">
       Return

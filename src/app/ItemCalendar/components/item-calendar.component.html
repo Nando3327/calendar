@@ -1,8 +1,8 @@
 <div class="row">
-  <div class="col-sm-1" style="margin: 5px">
+  <div class="col-sm-1">
     <br>
     <span>
-			<i class="fa fa-clock-o"></i>
+			<i [ngClass]="item.weather"></i>
 		</span>
   </div>
   <div class="col-sm-8" style="margin: 5px">
@@ -16,7 +16,7 @@
     </div>
 
   </div>
-  <div class="col-sm-2" style="margin: 5px">
+  <div class="col-sm-2">
     <br>
     <div>
       <button class="btn btn-warning" style="margin: 1%" (click)="edit()">

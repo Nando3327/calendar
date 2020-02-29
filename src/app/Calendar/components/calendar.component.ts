@@ -6,42 +6,46 @@ const mock = [{
   id: 1,
   year: 2020,
   month: 1,
-  day: 28,
-  color: 'red',
+  day: 29,
+  color: '#ff0000',
   initialHour: '06:00',
   finalHour: '20:00',
   city: 'Quito',
-  desc: 'ejemplo de prueba'
+  desc: 'ejemplo de prueba',
+  weather: 'fa fa-cloud'
 }, {
   id: 8,
   year: 2020,
   month: 1,
-  day: 28,
-  color: 'blue',
+  day: 29,
+  color: '#3960ff',
   initialHour: '01:00',
   finalHour: '14:00',
   city: 'Quito',
-  desc: 'ejemplo de prueba'
+  desc: 'ejemplo de prueba',
+  weather: 'fa fa-cloud'
 }, {
   id: 3,
   year: 2020,
-  month: 2,
-  day: 14,
-  color: 'blue',
+  month: 1,
+  day: 29,
+  color: '#3960ff',
   initialHour: '12:00',
   finalHour: '14:00',
   city: 'Quito',
-  desc: 'ejemplo de prueba'
+  desc: 'ejemplo de prueba',
+  weather: 'fa fa-cloud'
 }, {
   id: 6,
   year: 2020,
   month: 1,
   day: 2,
-  color: 'red',
+  color: '#ff0000',
   initialHour: '12:00',
   finalHour: '14:00',
   city: 'Quito',
-  desc: 'ejemplo de prueba'
+  desc: 'ejemplo de prueba',
+  weather: 'fa fa-cloud'
 }];
 
 @Component({
@@ -196,7 +200,7 @@ export class CalendarComponent implements OnInit {
     id++;
     if (id > 6) {
       this.htmlCalendar = this.htmlCalendar + '</div>';
-      this.htmlCalendar = this.htmlCalendar + '<div class="row">';
+      this.htmlCalendar = this.htmlCalendar + '<div class="row" style="margin: 0% !important;">';
       id = 0;
     }
     this.addDaysFoward(day, id, maxDay);
@@ -216,7 +220,7 @@ export class CalendarComponent implements OnInit {
           num--;
         }
       }
-      this.htmlCalendar = '<div class="row">' + this.htmlCalendar;
+      this.htmlCalendar = '<div class="row" style="margin: 0% !important;">' + this.htmlCalendar;
       return;
     }
     const valueToAddCalendar = this.calendarMatrix.find(x => {
@@ -234,7 +238,7 @@ export class CalendarComponent implements OnInit {
     day--;
     id--;
     if (id < 0) {
-      this.htmlCalendar = '<div class="row">' + this.htmlCalendar;
+      this.htmlCalendar = '<div class="row" style="margin: 0% !important;">' + this.htmlCalendar;
       this.htmlCalendar = '</div>' + this.htmlCalendar;
       id = 6;
     }
@@ -291,7 +295,10 @@ export class CalendarComponent implements OnInit {
     this.showCalendar = false;
     this.ref.detectChanges();
     setTimeout(() => {
-      this.calendarService.loadData({}, 'add');
+      this.calendarService.loadData({
+        month: this.selectedMonthId,
+        day: item
+      }, 'add');
     }, 400);
   }
 
