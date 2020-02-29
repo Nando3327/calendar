@@ -17,8 +17,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
   initTime: string;
   endTime: string;
   desc: string;
-  city: string;
-  cityName: string;
+  city: number;
   color: string;
   id: number;
   dayCalendar: number;
@@ -46,7 +45,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
         this.endTime = data.item.finalHour;
         this.desc = data.item.desc;
         this.city = this.cities.find(c => {
-          return c.id.toString() === data.item.city;
+          return c.id === data.item.city || c.id === data.item.city.toString();
         }).id;
         this.color = data.item.color;
         this.id = data.item.id;
@@ -92,17 +91,9 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
       return;
     }
     const city = this.cities.find(c => {
-      return this.city === c.id.toString();
+      return this.city === c.id || this.city === c.id.toString();
     });
-    this.calendarService.getWeather(city).subscribe(res => {
-      this.saveCalendarEvent(city, res.weather[0]);
-    }, error => {
-      this.saveCalendarEvent(city, {});
-    });
-  }
-
-  saveCalendarEvent(city, weather): void {
-    const item: DateModel = {
+    const saveObject: DateModel = {
       year: 2020,
       month: this.monthCalendar,
       day: this.dayCalendar,
@@ -112,15 +103,25 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
       cityName: city.name,
       initialHour: this.initTime,
       finalHour: this.endTime,
-      weather: this.isNullEmpty(weather.icon) ? weather.icon : '01d'
+      weather: '01d'
     };
+    this.calendarService.getWeather(city).subscribe(res => {
+      saveObject.weather = res.weather[0].icon;
+      this.saveCalendarEvent(saveObject, this.mode);
+    }, error => {
+      console.log(error);
+      this.saveCalendarEvent(saveObject, this.mode);
+    });
+  }
+
+  saveCalendarEvent(saveObject, mode): void {
     if (this.mode === 'edit') {
-      item.id = this.id;
+      saveObject.id = this.id;
     }
     this.returnActionEmiter.emit({
       action: 'save',
-      mode: this.mode,
-      data: item
+      mode: mode,
+      data: saveObject
     });
   }
 

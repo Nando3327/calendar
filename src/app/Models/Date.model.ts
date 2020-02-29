@@ -6,7 +6,7 @@ export class DateModel {
   color: string;
   initialHour: string;
   finalHour: string;
-  city: string;
+  city: number;
   cityName: string;
   desc: string;
   weather: string;

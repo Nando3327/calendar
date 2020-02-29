@@ -10,7 +10,7 @@ const mock = [{
   color: '#ff0000',
   initialHour: '06:00',
   finalHour: '20:00',
-  city: '3652462',
+  city: 3652462,
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
   weather: '10d'
@@ -22,7 +22,7 @@ const mock = [{
   color: '#3960ff',
   initialHour: '01:00',
   finalHour: '14:00',
-  city: '3652462',
+  city: 3652462,
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
   weather: '10d'
@@ -34,7 +34,7 @@ const mock = [{
   color: '#3960ff',
   initialHour: '12:00',
   finalHour: '14:00',
-  city: '3652462',
+  city: 3652462,
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
   weather: '09d'
@@ -46,7 +46,7 @@ const mock = [{
   color: '#ff0000',
   initialHour: '12:00',
   finalHour: '14:00',
-  city: '3652462',
+  city: 3652462,
   cityName: 'Quito',
   desc: 'ejemplo de prueba',
   weather: '03d'
