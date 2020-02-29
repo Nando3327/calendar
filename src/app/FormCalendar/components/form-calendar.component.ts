@@ -86,7 +86,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
     this.invalidRate = (this.initTime > this.endTime);
   }
 
-  saveAction(): void {
+  saveAction(): DateModel {
     if (!this.validadFields()) {
       return;
     }
@@ -112,9 +112,10 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
       console.log(error);
       this.saveCalendarEvent(saveObject, this.mode);
     });
+    return saveObject;
   }
 
-  saveCalendarEvent(saveObject: DateModel, mode): void {
+  saveCalendarEvent(saveObject: DateModel, mode): boolean {
     if (this.mode === 'edit') {
       saveObject.id = this.id;
     }
@@ -123,6 +124,7 @@ export class FormCalendarComponent implements OnInit, OnDestroy {
       mode: mode,
       data: saveObject
     });
+    return true;
   }
 
   ngOnDestroy(): void {
